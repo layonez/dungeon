@@ -12,7 +12,7 @@ public class DrawLine : MonoBehaviour
 	private Vector3 mousePos;
 	private float stepSize;
 
-	private Vector3[,] gridPoints;
+	public Vector3[,] gridPoints;
 
 	void fillGridPoints ()
 	{		
@@ -102,9 +102,9 @@ public class DrawLine : MonoBehaviour
 			{
 				if(pointsList.Count>0)
 				{
-					if(!valid(p,pointsList[pointsList.Count-1]))return;
+					if(!Valid(p,pointsList[pointsList.Count-1]))return;
 				}
-				else if(!valid(p,PlayerRenderer.bounds.center))return;
+				else if(!Valid(p,PlayerRenderer.bounds.center))return;
 						
 				
 				if((pointsList.Count==0 && isCloseToPlayer(p))||
@@ -118,10 +118,8 @@ public class DrawLine : MonoBehaviour
 			}
 		}
 	}
-	bool valid(Vector3 dir, Vector3 dir1) {
-		Vector3 pos = transform.position;
-		RaycastHit2D hit = Physics2D.Linecast(dir, dir1);
-		var col = GetComponent<BoxCollider2D> ();
+	public static bool Valid(Vector3 dir, Vector3 dir1) {
+		var hit = Physics2D.Linecast(dir, dir1);
 		return (hit.collider == null);
 	}
 

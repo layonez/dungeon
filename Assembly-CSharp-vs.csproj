@@ -46,7 +46,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Dijkstras_Algorithm.cs" />
      <Compile Include="Assets\DrawLine.cs" />
+     <Compile Include="Assets\MoveBadGuy.cs" />
      <Compile Include="Assets\MovePlayer.cs" />
      <Compile Include="Assets\UpdateMoveCounter.cs" />
  <Reference Include="UnityEngine.UI">
