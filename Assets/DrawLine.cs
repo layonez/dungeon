@@ -10,7 +10,7 @@ public class DrawLine : MonoBehaviour
 	private bool isMousePressed;
 	public List<Vector3> pointsList;
 	private Vector3 mousePos;
-	private float stepSize;
+	public  static float stepSize;
 
 	public Vector3[,] gridPoints;
 
@@ -68,10 +68,10 @@ public class DrawLine : MonoBehaviour
 		return false;
 	}
 	//находятся ли точки рядом, в пределах размера клетки
-	bool IsClose(Vector3 vec1, Vector3 vec2){
+	public static bool IsClose(Vector3 vec1, Vector3 vec2){
 		var dist=Vector3.Distance(vec1 , vec2);
 		//если хотим убрать хождение по диагонали, то нужно поставить множитель 1.3
-		if(dist<stepSize*1.6)
+		if(dist<stepSize*1.6 && dist>0.1)
 			return true;
 		return false;
 	}
@@ -120,15 +120,6 @@ public class DrawLine : MonoBehaviour
 	}
 	public static bool Valid(Vector3 dir, Vector3 dir1) {
 		var hit = Physics2D.Linecast(dir, dir1);
-		return (hit.collider == null);
+        return (hit.collider == null );
 	}
-
-	//	-----------------------------------	
-	//	Following method checks whether given two points are same or not
-	//	-----------------------------------	
-	private bool checkPoints (Vector3 pointA, Vector3 pointB)
-	{
-		return (pointA.x == pointB.x && pointA.y == pointB.y);
-	}
-
 }

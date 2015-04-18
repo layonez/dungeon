@@ -19,6 +19,10 @@ public class MovePlayer : MonoBehaviour {
 	
 	void Update () {
 		if (NeedMove && pointsList.Count > 1) {
+			GameObject go = GameObject.Find ("monster");
+			var moveBadGuy = go.GetComponent <MoveBadGuy> ();
+			moveBadGuy.ChangeDestination();
+
 			var newPos= new Vector3(pointsList [1].x, pointsList [1].y);
 			transform.position = Vector3.MoveTowards (transform.position, newPos, 5);
 			if (Vector3.Distance (transform.position, pointsList[1]) < 1) {

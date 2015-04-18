@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-	public class Edge
+public class Edge
 	{
 		private static int EdgeIDSequencer = 0;
 		
@@ -47,6 +48,7 @@ using System.Collections.Generic;
 	public class Vector2D 
 	{
 		public const int INFINITY = -1;
+        public Vector3 Vect { get; set; }
 		private static int VertexIDSequencer = 0;
 		
 		#region Properties
@@ -55,9 +57,13 @@ using System.Collections.Generic;
 		
 		public float AggregateCost { get; set; }
 		
-		public float XCoord { get; set; }
+		public float XCoord {
+		    get { return Vect.x; } 
+		}
 		
-		public float YCoord { get; set; }
+		public float YCoord {
+		    get { return Vect.y; } 
+		}
 		
 		public bool Deadend { get; private set; }
 		
@@ -68,12 +74,11 @@ using System.Collections.Generic;
 		
 		#endregion 
 		
-		public Vector2D(float x, float y, bool deadend)
+		public Vector2D(Vector3 vect)
 		{
 			Visited = false;
-			XCoord = x;
-			YCoord = y;
-			Deadend = deadend;
+		    Vect = vect;
+			Deadend = false;
 			AggregateCost = INFINITY;
 			VertexID = ++VertexIDSequencer;
 			EdgeWithLowestCost = null;
@@ -145,7 +150,7 @@ using System.Collections.Generic;
 		/// </summary>
 		/// <param name="edge"></param>
 		public void AddEdge(Edge edge) {
-			_listOfEdges.Add(edge);
+            _listOfEdges.Add(edge);
 			
 			// Reset stats due to a change to the graph.
 			this.Reset();
@@ -204,9 +209,9 @@ using System.Collections.Generic;
 			return true;
 		}
 		
-		public List<Vector2D> RetrieveShortestPath(Vector2D targetNode)
+		public List<Vector3> RetrieveShortestPath(Vector2D targetNode)
 		{
-			var shortestPath = new List<Vector2D>();
+			var shortestPath = new List<Vector3>();
 			
 			if (targetNode == null)
 			{
@@ -216,12 +221,12 @@ using System.Collections.Generic;
 			{
 				var currentNode = targetNode;
 				
-				shortestPath.Add(currentNode);
+				shortestPath.Add(currentNode.Vect);
 				
 				while (currentNode.EdgeWithLowestCost != null)
 				{
 					currentNode = currentNode.EdgeWithLowestCost.GetTheOtherVertex(currentNode);
-					shortestPath.Add(currentNode);
+					shortestPath.Add(currentNode.Vect);
 				}
 			}
 			
@@ -297,9 +302,9 @@ using System.Collections.Generic;
 						// Only update if the aggregate cost on the other node is infinite 
 						// or is greater and equal to the aggregate cost on the current visited node.
 						if (connectedEdge.GetTheOtherVertex(visitedNode).AggregateCost == Vector2D.INFINITY
-						    || (visitedNode.AggregateCost) < connectedEdge.GetTheOtherVertex(visitedNode).AggregateCost)
+						    || (visitedNode.AggregateCost+1) < connectedEdge.GetTheOtherVertex(visitedNode).AggregateCost)
 						{
-							connectedEdge.GetTheOtherVertex(visitedNode).AggregateCost = visitedNode.AggregateCost;
+							connectedEdge.GetTheOtherVertex(visitedNode).AggregateCost = visitedNode.AggregateCost +1;
 							
 							// update the pointer to the edge with the lowest cost in the other node
 							connectedEdge.GetTheOtherVertex(visitedNode).EdgeWithLowestCost = connectedEdge;
